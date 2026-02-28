@@ -1,0 +1,31 @@
+<html>
+  <body>
+    <script>
+      class apiFetch {
+        constructor() {
+          this.count = 0;
+        }
+        async getAPI(apiURL) {
+          let count = 0;
+          try {
+            let result = await fetch(apiURL);
+          } catch (error) {
+            if (this.count < 2) {
+              this.count = this.count + 1;
+              return setTimeout(this.getAPI(apiURL), 5000);
+            }
+            return error;
+          }
+        }
+      }
+
+      const test = new apiFetch();
+
+      function onClick() {
+        console.log(test.getAPI("https://api.example.com/data"));
+      }
+    </script>
+    <div>"Test"</div>
+    <button onclick="onClick()">Click me</button>
+  </body>
+</html>
