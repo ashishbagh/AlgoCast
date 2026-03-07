@@ -1,43 +1,39 @@
 class LRUCache {
-    /**
-     * @param {number} capacity
-     */
-    constructor(capacity) {
-        this.cache = {};
-        this.capacity = capacity;
-        this.recentKey = "";
-    }
+  /**
+   * @param {number} capacity
+   */
+  constructor(capacity) {
+    this.cache = new Map();
+    this.capacity = capacity;
+  }
 
-    /**
-     * @param {number} key
-     * @return {number}
-     */
-    get(key) {
-        if (!this.cache[key]) {
-            return -1
-        }
-        this.recentKey = key;
-        return this.cache[key];
+  /**
+   * @param {number} key
+   * @return {number}
+   */
+  get(key) {
+    if (!this.cache.has(key)) {
+      return -1;
     }
+    let value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return this.cache.get(key);
+  }
 
-    /**
-     * @param {number} key
-     * @param {number} value
-     * @return {void}
-     */
-    put(key, value) {
-        let keys = Object.keys(this.cache);
-        if (keys.length === this.capacity) {
-            delete this.cache[this.recentKey];
-            this.cache[key] = value;
-        } else {
-            if (!this.cache[key]) {
-                this.cache[key] = value;
-            } else {
-                this.recentKey = key;
-                this.cache[key] = value;
-            }
-        }
-
+  /**
+   * @param {number} key
+   * @param {number} value
+   * @return {void}
+   */
+  put(key, value) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
     }
+    this.cache.set(key, value);
+    if (this.cache.size > this.capacity) {
+      let leastReacentUsed = this.cache.keys().next().value;
+      this.cache.delete(leastReacentUsed);
+    }
+  }
 }
