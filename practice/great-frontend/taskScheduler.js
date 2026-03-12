@@ -1,40 +1,52 @@
-/**
- * Definition for a binary tree node.
- * class TreeNode {
- *     constructor(val = 0, left = null, right = null) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
+const taskProcessor = (task) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(`${task}- executed successfully`), 1000 * task);
+  });
+};
 
-class Solution {
-  /**
-   * @param {TreeNode} root
-   * @return {number[][]}
-   */
-  levelOrder(root) {
-    let result = new Map();
-    let level = 0;
-    result.set(level, [root.val]);
+const taskScheduler = (queue, delays, n) => {
+  let running = 0; // scoped inside — no global state
 
-    const bfs = (root, level) => {
-      if (!root) {
-        return;
-      }
-      let res = [];
-      res.push(root.val);
+  const scheduler = () => {
+    while (running < n && queue.length > 0) {
+      const task = queue.shift();
+      console.log(`${task}- queued`);
+      running++;
 
-      if (!result.get(level)) {
-        result.set(level, res);
-      } else {
-        result.set(level, [...result.get(level), ...res]);
-      }
+      taskProcessor(task).then((data) => {
+        console.log(data);
+        running--;
+        scheduler(); // slot opened → immediately try to pick next
+      });
+    }
+  };
 
-      level++;
-      bfs(root.left, level);
-      bfs(root.right, level);
-    };
-  }
-}
+  const scheduleNext = () => {
+    if (delays.length === 0 || queue.length === 0) return;
+    const nextDelay = delays.shift();
+    setTimeout(() => {
+      scheduler(); // try to fill slots at this trigger point
+      scheduleNext(); // chain to next delay
+    }, nextDelay);
+  };
+
+  scheduler(); // initial fill
+  scheduleNext(); // start delay-based triggers
+};
+
+taskScheduler([1, 2, 8, 9, 10], [10, 1000, 2200, 80], 2);
+
+// 1- queued
+// 10
+// 2- queued
+// 1- executed successfully
+// 1000
+// 8- queued
+// 2- executed successfully
+// 2200
+// 9- queued
+// 80
+// 10- queued
+// 8- executed successfully
+// 9- executed successfully
+// 10- executed successfully
