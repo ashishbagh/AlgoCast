@@ -1,14 +1,3 @@
-// Implement a function deepEqual that performs a deep comparison between two values. It returns true if two input values are deemed equal, and returns false if not.
-
-// You can assume there are only JSON-serializable values (numbers, strings, boolean, null, objects, arrays).
-// There wouldn't be cyclic objects, i.e. objects with circular references.
-
-// deepEqual('foo', 'foo'); // true
-// deepEqual({ id: 1 }, { id: 1 }); // true
-// deepEqual([1, 2, 3], [1, 2, 3]); // true
-// deepEqual([{ id: '1' }], [{ id: '2' }]); // false
-
-
 /**
  * @param {*} valueA
  * @param {*} valueB
@@ -26,15 +15,14 @@ export default function deepEqual(obj1, obj2) {
         return false;
     }
     let keys = Object.keys(obj1);
+
+    //iterate through keys
     for (const key of keys) {
         //string,number,boolean
-        switch (typeof obj1[key]) {
-            case "object":
-                return deepEqual(obj1[key], obj2[key]);
-            default:
-                if (obj1[key] !== obj2[key]) {
-                    return false;
-                }
+        if (typeof obj1[key] === "object") {
+            return deepEqual(obj1[key], obj2[key]);
+        } else {
+            if (obj1[key] !== obj2[key]) return false;
         }
     }
     return true;
