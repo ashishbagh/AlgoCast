@@ -1,44 +1,42 @@
 function customPromise(executor) {
   // pending
   // reject ---> catch
-  // full fill --> then
   this.state = "pending";
   let onResolve, onReject;
-  this.then = (callback) => {
-    onResolve = callback;
-    let value = this.value;
+  this.value = "";
+  this.error = "";
+
+  this.then = function (callbackFn) {
+    onResolve = callbackFn;
     if (this.state === "fullfilled") {
-      callback(value);
+      callbackFn(this.value);
     }
-    return this;
   };
 
-  this.catch = (callback) => {
-    onReject = callback;
-    let value = this.value;
+  this.catch = function (callbackFn) {
+    onReject = callbackFn;
     if (this.state === "rejected") {
-      callback(value);
-      console.log(this.state);
+      callbackFn(this.error);
     }
-    return this;
   };
 
-  function resolve(val) {
+  function resolve(value) {
+    this.value = value;
     this.state = "fullfilled";
-    this.value = val;
     if (typeof onResolve === "function") {
-      onResolve(val);
-      console.log(this.state);
+      onResolve(value);
     }
   }
 
-  function reject(val) {
+  function reject() {
+    this.error = error;
     this.state = "rejected";
-    this.value = val;
+    if (typeof onReject === "function") {
+      onReject(value);
+    }
   }
 
   executor(resolve, reject);
-  console.log("pending");
 }
 
 // Usage

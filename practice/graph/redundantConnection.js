@@ -7,7 +7,7 @@
 // Input: edges = [[1,2],[1,3],[3,4],[2,4]]
 // Output: [2,4]
 
-// idea is to find all the adjacent list {1:[2,3],2:[1,4],3:[1,4],4:[2,3]}; 
+// idea is to find all the adjacent list {1:[2,3],2:[1,4],3:[1,4],4:[2,3]};
 // and check if e.g  [1,2] 1--->2 reach 2 using neibhours if yes than 1,2 is redundant
 
 class Solution {
@@ -37,7 +37,7 @@ class Solution {
     for (const edge of edges) {
       let [u, v] = edge;
 
-      if (adj.has(u) && adj.has(u)) {
+      if (adj.has(u) && adj.has(v)) {
         if (isReachable(u, v, new Set())) {
           return [u, v];
         }

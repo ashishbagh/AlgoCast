@@ -26,18 +26,20 @@ class Solution {
     let maxF = 0;
     let left = 0;
     let res = 0;
-    for (let i = 0; i < s.length; i++) {
-      if (!map[s[i]]) {
-        map[s[i]] = 1;
+    let right = 0;
+    while (right < s.length) {
+      if (!map[s[right]]) {
+        map[s[right]] = 1;
       } else {
-        map[s[i]] += 1;
+        map[s[right]] += 1;
       }
-      maxF = Math.max(maxF, map[s[i]]);
-      while (i - left + 1 - maxF > k) {
+      maxF = Math.max(maxF, map[s[right]]);
+      while (right - left + 1 - maxF > k) {
         map[s[left]] -= 1;
         left++;
       }
-      res = Math.max(res, i - left + 1);
+      res = Math.max(res, right - left + 1);
+      right++;
     }
 
     return res;

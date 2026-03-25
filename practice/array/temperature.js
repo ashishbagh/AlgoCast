@@ -8,29 +8,27 @@
 
 // Output: [1,4,1,2,1,0,0]
 
-
-
 class Solution {
   /**
    * @param {number[]} temperatures
    * @return {number[]}
    */
   dailyTemperatures(temperatures) {
-    let res = [];
-    let right = 1;
+    let result = new Array(temperatures.length).fill(0);
+    let stack = [0];
 
-    for (let i = 0; i < temperatures.length; i++) {
-      right = i + 1;
-      res[i] = 0;
-      while (right < temperatures.length) {
-        if (temperatures[i] < temperatures[right]) {
-          res[i] = right - i;
-          break;
-        }
-        right++;
+    for (let i = 1; i < temperatures.length; i++) {
+      while (
+        stack.length > 0 &&
+        temperatures[i] > temperatures[stack[stack.length - 1]]
+      ) {
+        let n = stack[stack.length - 1];
+        result[n] = i - n;
+        stack.pop();
       }
+      stack.push(i);
     }
 
-    return res;
+    return result;
   }
 }
