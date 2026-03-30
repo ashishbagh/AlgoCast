@@ -18,34 +18,34 @@ const totalInfTime = (grid) => {
 
   let arr = [[0, 0]];
 
-  const dfs = (r, c, tem = []) => {
+  const dfs = (r, c, nextQueue = []) => {
     if (r + 1 < rows && grid[r + 1][c] !== 1) {
       grid[r + 1][c] = 1;
-      tem.push([r + 1, c]);
+      nextQueue.push([r + 1, c]);
     }
-    if (r - 1 > 0 && grid[r - 1][c] !== 1) {
+    if (r - 1 >= 0 && grid[r - 1][c] !== 1) {  // fix: > 0 → >= 0
       grid[r - 1][c] = 1;
-      tem.push([r - 1, c]);
+      nextQueue.push([r - 1, c]);
     }
     if (c + 1 < cols && grid[r][c + 1] !== 1) {
       grid[r][c + 1] = 1;
-      tem.push([r, c + 1]);
+      nextQueue.push([r, c + 1]);
     }
-    if (c - 1 > 0 && grid[r][c - 1] !== 1) {
+    if (c - 1 >= 0 && grid[r][c - 1] !== 1) {  // fix: > 0 → >= 0
       grid[r][c - 1] = 1;
-      tem.push([r, c - 1]);
+      nextQueue.push([r, c - 1]);
     }
-    return tem;
+    return nextQueue;
   };
 
   let count = 0;
   while (arr.length !== 0) {
-    let temp = [];
+    let nextQueue = [];
     while (arr.length !== 0) {
       let [r, c] = arr.pop();
-      temp = dfs(r, c, temp); // [0,0]
+      nextQueue = dfs(r, c, nextQueue); // [0,0]
     }
-    arr = temp;
+    arr = nextQueue;
     if (arr.length > 0) count += 1;
   }
 
