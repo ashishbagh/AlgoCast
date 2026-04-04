@@ -11,21 +11,20 @@ const sendGridTransport = require("nodemailer-sendgrid-transport");
 const transporter = nodemailer.createTransport(
   sendGridTransport({
     auth: {
-      api_key:
-        "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",
+      api_key: "",
     },
   }),
 );
 
-transporter
-  .sendMail({
-    to: "ashishbaghel10@gmail.com",
-    from: "ashishjioacco@gmail.com",
-    subject: "Signup Succeed",
-    html: "<h1> Done</h1>",
-  })
-  .then((response) => console.log("message", response))
-  .catch((err) => console.log(err));
+// transporter
+//   .sendMail({
+//     to: "ashishbaghel10@gmail.com",
+//     from: "ashishjioacco@gmail.com",
+//     subject: "Signup Succeed",
+//     html: "<h1> Done</h1>",
+//   })
+//   .then((response) => console.log("message", response))
+//   .catch((err) => console.log(err));
 
 // const db = require("./util/database");
 
