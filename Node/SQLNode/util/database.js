@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("node-sch", "root", "As3466610", {
+const sequelize = new Sequelize("node-sch", "root", "ashish@1234", {
   dialect: "mysql",
   host: "localhost",
 });
@@ -11,7 +11,7 @@ const sequelize = new Sequelize("node-sch", "root", "As3466610", {
 //   host: "localhost",
 //   user: "root",
 //   database: "node-sch",
-//   password: "As3466610",
+//   password: "ashish@1234",
 // });
 
 // module.exports = pool.promise();
