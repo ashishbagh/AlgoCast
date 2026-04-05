@@ -33,30 +33,27 @@ class Solution {
    * @returns {number}
    */
   minMeetingRooms(intervals) {
-    let startT = [];
-    let endT = [];
-    for (let i = 0; i < intervals.length; i++) {
-      startT.push(intervals[i].start);
-      endT.push(intervals[i].end);
+    let startArr = [];
+    let endArr = [];
+
+    for (const { start, end } of intervals) {
+      startArr.push(start);
+      endArr.push(end);
     }
-    startT = startT.sort((a, b) => a - b);
-    endT = endT.sort((a, b) => a - b);
-    let count = 0;
-    let maxCount = 0;
-    let left = 0;
+    startArr = startArr.sort((a, b) => a - b);
+    endArr = endArr.sort((a, b) => a - b);
     let right = 0;
+    let left = 0;
+    let count = 0;
 
-    while (left < intervals.length) {
-      if (startT[left] < endT[right]) {
-        count += 1;
-        left++;
-      } else {
-        count -= 1;
+    while (left < startArr.length) {
+      if (startArr[left] >= endArr[right]) {
         right++;
+      } else {
+        count++;
       }
-      maxCount = Math.max(count, maxCount);
+      left++;
     }
-
-    return maxCount;
+    return count;
   }
 }
