@@ -1,0 +1,22 @@
+{
+  "name": "rest-node",
+  "version": "1.0.0",
+  "description": "rest node service",
+  "license": "ISC",
+  "author": "Ashish",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "consumer": "node consumer.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
+    "ioredis": "^5.10.1",
+    "kafkajs": "^2.2.4",
+    "nodemon": "^3.1.14"
+  }
+}
