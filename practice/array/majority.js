@@ -33,4 +33,26 @@ const majority = (arr) => {
   return -1;
 };
 
+class Solution {
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  majorityElement(nums) {
+    let candidate = null;
+    let count = 0;
+    for (const num of nums) {
+      if (count === 0) {
+        candidate = num;
+      }
+      if (num === candidate) {
+        count++;
+      } else {
+        count--;
+      }
+    }
+    return candidate;
+  }
+}
+
 console.log(majority([1, 1, 2, 1, 3, 5, 1]));

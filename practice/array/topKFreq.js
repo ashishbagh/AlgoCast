@@ -18,32 +18,17 @@ class Solution {
    * @return {number[]}
    */
   topKFrequent(nums, k) {
-    let map = {};
-    let result = [];
-    for (let i = 0; i < nums.length; i++) {
-      result[i + 1] = [];
-      if (!map[nums[i]]) {
-        map[nums[i]] = 1;
-      } else {
-        map[nums[i]] += 1;
-      }
+    let map = new Map();
+    for (const num of nums) {
+      let val = map.get(num);
+      if (!val) map.set(num, 1);
+      else map.set(num, val + 1);
     }
-    let arr = Object.keys(map);
-    arr.forEach((element) => {
-      result[map[element]].push(element);
-    });
-
+    map = new Map([...map.entries()].sort((a, b) => a[1] - b[1]));
     let res = [];
-    for (let i = result.length - 1; i > 0; i--) {
-      let tempArr = result[i];
-      for (let j = 0; j < tempArr.length; j++) {
-        res.push(tempArr[j]);
-        if (res.length === k) {
-          return res;
-        }
-      }
+    for (const key of map.keys()) {
+      res.push(key);
     }
-
-    return res;
+    return res.slice(map.size - k, map.size);
   }
 }
