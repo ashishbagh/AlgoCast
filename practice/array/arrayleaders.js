@@ -9,23 +9,19 @@
 // Output: [10, 4, 4, 1]
 // Explanation: Note that both of the 4s are in output, as to be a leader an equal element is also allowed on the right. side
 
-const arrlead = (arr) => {
-  let res = [arr[arr.length - 1]];
-  let pointer = 0;
-  for (let i = arr.length - 2; i >= 0; i--) {
-    if (res[pointer] > arr[i]) {
-      while (res[pointer] <= arr[i]) {
-        res[pointer] = arr[i];
-        pointer--;
-      }
-    } else {
-      res.push(arr[i]);
-      pointer++;
+const arrlead = (a) => {
+  // code here
+  let n = a.length;
+  let res = [a[n - 1]];
+  let max = a[n - 1];
+  for (let i = n - 2; i >= 0; i--) {
+    if (a[i] >= max) {
+      res.push(a[i]);
+      max = a[i];
     }
   }
+
   return res.reverse();
 };
 
 console.log(arrlead([10, 4, 2, 4, 1]));
-
-

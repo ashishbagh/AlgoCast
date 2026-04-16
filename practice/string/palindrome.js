@@ -21,6 +21,30 @@ const isPalindrome = (s) => {
   return str === str2;
 };
 
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+const isPalindromeTwoPoin = (s) => {
+  let l = 0;
+  let r = s.length - 1;
+
+  while (l < r) {
+    while (l < r && !this.isValidStr(s[r])) {
+      r--;
+    }
+    while (l < r && !this.isValidStr(s[l])) {
+      l++;
+    }
+    if (!s[l] || !s[r] || s[l].toLowerCase() !== s[r].toLowerCase())
+      return false;
+    l++;
+    r--;
+  }
+
+  return true;
+};
+
 const isValidStr = (s) => {
   return /^[a-zA-Z0-9]+$/.test(s);
 };

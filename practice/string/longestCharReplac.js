@@ -34,6 +34,7 @@ class Solution {
         map[s[right]] += 1;
       }
       maxF = Math.max(maxF, map[s[right]]);
+      // check valid window if not shrik from left
       while (right - left + 1 - maxF > k) {
         map[s[left]] -= 1;
         left++;

@@ -73,18 +73,20 @@ const maxSumN = (arr) => {
 // kadane algo
 
 const kad = (arr) => {
-  let left = 0;
+  let l = 0;
   let sum = 0;
-  let highestSum = arr[0];
-  while (left < arr.length) {
+  let maxSum = -Infinity;
+
+  while (l < nums.length) {
     if (sum < 0) {
       sum = 0;
     }
-    sum = sum + arr[left];
-    highestSum = Math.max(highestSum, sum);
-    left++;
+    sum = sum + nums[l];
+    maxSum = Math.max(maxSum, sum);
+    l++;
   }
-  console.log(highestSum);
+
+  return maxSum;
 };
 
 kad([1, 2, 3, -2, 5]);
