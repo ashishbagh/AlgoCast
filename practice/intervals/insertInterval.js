@@ -21,22 +21,19 @@ class Solution {
    */
   insert(intervals, newInterval) {
     let result = [];
-
     for (let i = 0; i < intervals.length; i++) {
-      if (newInterval[1] < intervals[i][0]) {
-        //ns;
+      if (intervals[i][0] > newInterval[1]) {
         result.push(newInterval);
-        return [...result, ...intervals.slice(i, 5)];
-      } else if (newInterval[0] > intervals[i][1]) {
+        return [...result, ...intervals.slice(i, intervals.length)];
+      } else if (intervals[i][1] < newInterval[0]) {
         result.push(intervals[i]);
-      } else {
+      } else if (intervals[i][1] >= newInterval[0]) {
         newInterval = [
-          Math.min(newInterval[0], intervals[i][0]),
-          Math.max(newInterval[1], intervals[i][1]),
+          Math.min(intervals[i][0], newInterval[0]),
+          Math.max(intervals[i][1], newInterval[1]),
         ];
       }
     }
-
     result.push(newInterval);
 
     return result;

@@ -15,7 +15,7 @@ const groupAn = (arr) => {
   return Object.values(map);
 };
 
-/**
+/** O(m*n);
  * @param {string[]} strs
  * @return {string[][]}
  */

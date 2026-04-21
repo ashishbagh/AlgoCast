@@ -1,3 +1,7 @@
+// Given two strings s and t, return the shortest substring of s such that every character in t, including duplicates, is present in the substring. If such a substring does not exist, return an empty string "".
+
+// You may assume that the correct output is always unique.
+
 class Solution {
   /**
    * @param {string} s
@@ -26,7 +30,7 @@ class Solution {
       if (need.has(c) && window.get(c) === need.get(c)) {
         valid++;
       }
-
+      // Shrinking the window
       while (valid === need.size) {
         if (right - left + 1 < minLen) {
           minLen = right - left + 1;

@@ -85,7 +85,6 @@ const kad = (arr) => {
     maxSum = Math.max(maxSum, sum);
     l++;
   }
-
   return maxSum;
 };
 

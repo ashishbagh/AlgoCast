@@ -1,14 +1,11 @@
 // Given a string s, return the number of substrings within s that are palindromes.
-
 // A palindrome is a string that reads the same forward and backward.
 
 // Example 1:
-
 // Input: s = "abc"
 
 // Output: 3
 // Explanation: "a", "b", "c".
-
 // Example 2:
 
 // Input: s = "aaa"

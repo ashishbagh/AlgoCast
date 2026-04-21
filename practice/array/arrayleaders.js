@@ -20,7 +20,6 @@ const arrlead = (a) => {
       max = a[i];
     }
   }
-
   return res.reverse();
 };
 

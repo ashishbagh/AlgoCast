@@ -14,8 +14,7 @@ class Solution {
       }
       let key = `${i},${sum}`;
       cache[key] =
-        backTracking(i + 1, nums[i] + sum) +
-        backTracking(i + 1, -nums[i] + sum);
+        backTracking(i + 1, nums[i] + sum) + backTracking(i + 1, sum - nums[i]);
       return cache[key];
     };
 

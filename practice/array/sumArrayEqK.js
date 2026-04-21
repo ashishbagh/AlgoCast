@@ -1,7 +1,4 @@
 // Subarray Sum Equals K
-// Medium
-// Topics
-// Company Tags
 // You are given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
 // A subarray is a contiguous non-empty sequence of elements within an array.
 
@@ -27,9 +24,9 @@ class Solution {
     let count = 0;
     for (const num of nums) {
       prefixSum += num;
-      let temp = prefixSum - k;
-      if (map[temp]) {
-        count += map[temp];
+      let diff = prefixSum - k;
+      if (map[diff]) {
+        count += map[diff];
       }
       if (!map[prefixSum]) {
         map[prefixSum] = 1;

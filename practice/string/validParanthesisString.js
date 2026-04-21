@@ -14,6 +14,9 @@
 
 // Output: true
 
+// s = "*("
+// Output : false
+
 class Solution {
   /**
    * @param {string} s
