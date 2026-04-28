@@ -1,3 +1,11 @@
+// You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [aᵢ, bᵢ] indicates that there is an edge between aᵢ and bᵢ in the graph.
+// Return the number of connected components in the graph.
+
+// Example 1:
+// Input:
+// n = 5, edges = [[0,1],[1,2],[3,4]]
+// Output: 2
+
 class Solution {
   /**
    * @param {number} n
@@ -5,39 +13,33 @@ class Solution {
    * @returns {number}
    */
   countComponents(n, edges) {
-    if (n === 0) return true;
-
-    let adj = {};
+    const adj = {};
     for (let i = 0; i < n; i++) {
       adj[i] = [];
     }
 
-    for (const num in edges) {
-      let [n1, n2] = edges[num];
-      adj[n1].push(n2);
-      adj[n2].push(n1);
+    for (const [u, v] of edges) {
+      adj[u].push(v);
+      adj[v].push(u);
     }
 
-    let visit = new Set();
-    const dfs = (i, prev) => {
-      if (visit.has(i)) return;
-      visit.add(i);
-      for (const j in adj[i]) {
-        if (adj[i][j] === prev) continue;
-        if (!dfs(adj[i][j], i)) return;
+    const visit = new Set();
+    const dfs = (node) => {
+      if (visit.has(node)) return;
+      visit.add(node);
+      for (const neighbor of adj[node]) {
+        dfs(neighbor);
       }
-      return;
     };
 
-    let node = 0;
     let count = 0;
-    while (visit.size !== n) {
+    for (let node = 0; node < n; node++) {
       if (!visit.has(node)) {
-        dfs(node, node - 1);
-        cnt += 1;
+        dfs(node);
+        count++;
       }
-      node++;
     }
+
     return count;
   }
 }

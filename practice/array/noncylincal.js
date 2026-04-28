@@ -5,32 +5,26 @@
 // If it stops at 1, then the number is a non-cyclical number.
 // Given a positive integer n, return true if it is a non-cyclical number, otherwise return false.
 
-
-
 class Solution {
-    /**
-     * @param {number} n
-     * @return {boolean}
-     */
-    isHappy(n) {
-        let str = n + "";
-        let map = new Set();
-        while (true) {
-            let res = 0;
-            for (let i = 0; i < str.length; i++) {
-                let temp = str[i] * 1;
-                res += temp * temp
-            }
-            if (res === 1) {
-                return true;
-            }
-            if (!map.has(res)) {
-                map.add(res);
-            } else {
-                return false;
-            }
-            str = res + "";
-        }
-
-    }
+  /**
+   * @param {number} n
+   * @return {boolean}
+   */
+  isHappy(n) {
+    let t = n + "";
+    let visit = new Set();
+    const recur = (num) => {
+      if (visit.has(num)) return false;
+      if (num === 1) return true;
+      let res = 0;
+      let str = num + "";
+      for (let i = 0; i < str.length; i++) {
+        let prd = parseInt(str[i]) * parseInt(str[i]);
+        res += prd;
+      }
+      visit.add(num);
+      return recur(res);
+    };
+    return recur(n);
+  }
 }
