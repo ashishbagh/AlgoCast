@@ -15,4 +15,24 @@ const rotatedArr = (arr, start, end) => {
   }
 };
 
-console.log(rotatedArr([7, 8, 9, 4, 5, 6], 0, 6));
+const minInArr = (arr, target) => {
+  let left = 0;
+  let right = arr.length - 1;
+
+  while (left <= right) {
+    let mid = parseInt((left + right) / 2);
+    if (arr[mid] > target) {
+      right = mid - 1;
+    } else if (arr[mid] < target) {
+      left = mid + 1;
+    } else {
+      return mid;
+    }
+  }
+
+  return -1;
+};
+
+//console.log(rotatedArr([7, 8, 9, 4, 5, 6], 0, 6));
+
+console.log(minInArr([1, 2, 3, 4, 5, 6], 4));

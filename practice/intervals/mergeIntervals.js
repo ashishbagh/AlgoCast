@@ -14,23 +14,19 @@ const merge = (intervals) => {
   if (intervals.length < 2) {
     return intervals;
   }
-  let sortedInt = intervals.sort((a, b) => a[0] - b[0]);
-
-  let result = [sortedInt[0]];
-  let respointer = 1;
-
-  let pointer = 1;
-  while (pointer < sortedInt.length) {
-    // over lapping
-    if (result[respointer - 1][1] >= sortedInt[pointer][0]) {
-      // Check which interval will be at the end
-      let end = Math.max(sortedInt[pointer][1], result[respointer - 1][1]);
-      result[respointer - 1] = [result[respointer - 1][0], end];
+  let int = intervals.sort((a, b) => a[0] - b[0]);
+  let result = [int[0]];
+  let res = 0;
+  for (let i = 1; i < int.length; i++) {
+    if (result[res][1] >= int[i][0]) {
+      result[res] = [
+        Math.min(result[res][0], int[i][0]),
+        Math.max(result[res][1], int[i][1]),
+      ];
     } else {
-      result.push(sortedInt[pointer]);
-      respointer++;
+      result.push(int[i]);
+      res++;
     }
-    pointer++;
   }
 
   return result;
