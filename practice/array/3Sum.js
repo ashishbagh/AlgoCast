@@ -4,33 +4,31 @@ class Solution {
    * @return {number[][]}
    */
   threeSum(nums) {
-    let arr = nums.sort((a, b) => a - b);
-    let map = new Set();
-    let results = [];
+    nums.sort((a, b) => a - b);
+    const res = [];
 
-    const targetSum = (target, left, right, res) => {
-      while (left < right) {
-        if (arr[left] + arr[right] < target) {
-          left++;
-        } else if (arr[left] + arr[right] > target) {
-          right--;
+    for (let i = 0; i < nums.length; i++) {
+      if (nums[i] > 0) break;
+      if (i > 0 && nums[i] === nums[i - 1]) continue;
+
+      let l = i + 1;
+      let r = nums.length - 1;
+      while (l < r) {
+        const sum = nums[i] + nums[l] + nums[r];
+        if (sum > 0) {
+          r--;
+        } else if (sum < 0) {
+          l++;
         } else {
-          let temp = [...res, ...[arr[left], arr[right]]];
-          if (!map.has(temp.join(""))) {
-            map.add(temp.join(""));
-            results.push(temp);
+          res.push([nums[i], nums[l], nums[r]]);
+          l++;
+          r--;
+          while (l < r && nums[l] === nums[l - 1]) {
+            l++;
           }
-          left++;
-          right--;
         }
       }
-      return;
-    };
-
-    for (let i = 0; i < arr.length; i++) {
-      //map.add(arr[i]);
-      targetSum(arr[i] * -1, i + 1, arr.length - 1, [arr[i]]);
     }
-    return results;
+    return res;
   }
 }

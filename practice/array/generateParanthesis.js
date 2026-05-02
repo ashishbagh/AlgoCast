@@ -1,31 +1,28 @@
 class Solution {
-  /**
-   * @param {number} n
-   * @return {string[]}
-   */
   generateParenthesis(n) {
-    let result = [];
-    let ans = [];
-    const generate = (numOpen, numClose) => {
-      if (numClose === numOpen && numOpen === n) {
-        ans.push(result.join(""));
+    const result = [];
+    const path = [];
+
+    const backtrack = (open, close) => {
+      if (open === n && close === n) {
+        result.push(path.join(""));
         return;
       }
 
-      if (numOpen < n) {
-        result.push("(");
-        generate(numOpen + 1, numClose);
-        result.pop();
+      if (open < n) {
+        path.push("(");
+        backtrack(open + 1, close);
+        path.pop();
       }
 
-      if (numClose < numOpen) {
-        result.push(")");
-        generate(numOpen, numClose + 1);
-        result.pop();
+      if (close < open) {
+        path.push(")");
+        backtrack(open, close + 1);
+        path.pop();
       }
     };
 
-    generate(0, 0);
-    return ans;
+    backtrack(0, 0);
+    return result;
   }
 }

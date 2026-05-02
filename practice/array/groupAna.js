@@ -20,32 +20,25 @@ const groupAn = (arr) => {
  * @return {string[][]}
  */
 const groupAnagrams = (strs) => {
-  const alphabet = Array.from({ length: 26 }, (_, i) =>
-    String.fromCharCode(97 + i),
-  );
-  let map = {};
+  const map = new Map();
 
   for (const str of strs) {
-    let n = str.length - 1;
-    let res = [];
-    while (n >= 0) {
-      if (!res[alphabet.indexOf(str[n])]) {
-        res[alphabet.indexOf(str[n])] = str[n];
-      } else {
-        res[alphabet.indexOf(str[n])] =
-          `${res[alphabet.indexOf(str[n])]}` + str[n];
-      }
-      n--;
+    const count = new Array(26).fill(0);
+
+    for (const ch of str) {
+      count[ch.charCodeAt(0) - 97]++;
     }
-    res = res.join("");
-    if (!map[res]) {
-      map[res] = [str];
+
+    const key = count.join("#");
+
+    if (!map.has(key)) {
+      map.set(key, [str]);
     } else {
-      map[res].push(str);
+      map.get(key).push(str);
     }
   }
 
-  return Object.values(map);
+  return [...map.values()];
 };
 
 console.log(groupAn(["eat", "tea", "tan", "ate", "nat", "bat"]));
