@@ -1,13 +1,13 @@
-class TrieNode {
+class Trie {
   constructor() {
-    this.children = {}; // Stores child nodes, keys are characters, values are TrieNode instances
-    this.isEndOfWord = false; // A flag to mark the end of a complete word
+    this.children = {};
+    this.isEnd = false;
   }
 }
 
 class PrefixTree {
   constructor() {
-    this.root = new TrieNode();
+    this.root = new Trie();
   }
 
   /**
@@ -15,17 +15,14 @@ class PrefixTree {
    * @return {void}
    */
   insert(word) {
-    // this.root = new PrefixTree();
-    let current = this.root;
-
+    let node = this.root;
     for (const char of word) {
-      if (!current.children[char]) {
-        current.children[char] = new TrieNode();
+      if (!node.children[char]) {
+        node.children[char] = new Trie();
       }
-      current = current.children[char];
+      node = node.children[char];
     }
-    current.isEndOfWord = true;
-    return true;
+    node.isEnd = true;
   }
 
   /**
@@ -33,13 +30,14 @@ class PrefixTree {
    * @return {boolean}
    */
   search(word) {
-    let current = this.root;
+    let node = this.root;
     for (const char of word) {
-      if (!current.children[char]) return false;
-      current = current.children[char];
+      if (!node.children[char]) {
+        return false;
+      }
+      node = node.children[char];
     }
-
-    return current.isEndOfWord;
+    return node.isEnd;
   }
 
   /**
@@ -47,10 +45,12 @@ class PrefixTree {
    * @return {boolean}
    */
   startsWith(prefix) {
-    let current = this.root;
+    let node = this.root;
     for (const char of prefix) {
-      if (!current.children[char]) return false;
-      current = current.children[char];
+      if (!node.children[char]) {
+        return false;
+      }
+      node = node.children[char];
     }
     return true;
   }

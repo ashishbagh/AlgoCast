@@ -12,30 +12,37 @@
 
 // Output: false
 
-class Solution {
-  /**
-   * @param {string} s1
-   * @param {string} s2
-   * @return {boolean}
-   */
-  checkInclusion(s1, s2) {
-    let left = 0;
-    let arr = s1.split("");
-    while (left < s2.length) {
-      if (arr.indexOf(s2[left]) !== -1) {
-        let count = left + 1;
-        let tempStr = s2[left];
-        while (tempStr.length !== arr.length && count < s2.length) {
-          tempStr = tempStr + s2[count];
-          count++;
-        }
-        if (arr.sort().join("") === tempStr.split("").sort().join("")) {
-          return true;
-        }
-      }
+function checkInclusion(s1, s2) {
+  if (s1.length > s2.length) return false;
+
+  const count1 = new Array(26).fill(0);
+  const count2 = new Array(26).fill(0);
+
+  for (const ch of s1) {
+    count1[ch.charCodeAt(0) - 97]++;
+  }
+
+  let left = 0;
+
+  for (let right = 0; right < s2.length; right++) {
+    count2[s2[right].charCodeAt(0) - 97]++;
+
+    if (right - left + 1 > s1.length) {
+      count2[s2[left].charCodeAt(0) - 97]--;
       left++;
     }
 
-    return false;
+    if (arraysEqual(count1, count2)) {
+      return true;
+    }
   }
+
+  return false;
+}
+
+function arraysEqual(a, b) {
+  for (let i = 0; i < 26; i++) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 }
