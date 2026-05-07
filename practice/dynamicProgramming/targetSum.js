@@ -5,7 +5,6 @@ class Solution {
    * @return {number}
    */
   findTargetSumWays(nums, target) {
-    let res = 0;
     let cache = {};
     const backTracking = (i, sum) => {
       if (i === nums.length) {

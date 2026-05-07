@@ -3,6 +3,7 @@
  * @return {Promise<Array>}
  */
 export default function promiseAll(iterable) {
+  const results = new Array(n);
   return new Promise((resolve, reject) => {
     let results = [];
     let counter = iterable.length;

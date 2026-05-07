@@ -35,7 +35,6 @@ class Solution {
       }
     }
     result.push(newInterval);
-
     return result;
   }
 }

@@ -1,3 +1,14 @@
+// You are given two strings word1 and word2, each consisting of lowercase English letters.
+
+// You are allowed to perform three operations on word1 an unlimited number of times:
+
+// Insert a character at any position
+// Delete a character at any position
+// Replace a character at any position
+// Return the minimum number of operations to make word1 equal word2.
+// word1="abd"
+// word2="acd"
+
 class Solution {
   /**
    * @param {string} word1

@@ -18,7 +18,7 @@ const merge = (intervals) => {
   let result = [int[0]];
   let res = 0;
   for (let i = 1; i < int.length; i++) {
-    if (result[res][1] >= int[i][0]) {
+    if (result[res][1] >= int[i][0]) { // merge on conflict
       result[res] = [
         Math.min(result[res][0], int[i][0]),
         Math.max(result[res][1], int[i][1]),

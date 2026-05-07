@@ -9,6 +9,7 @@
 
 // idea is to find all the adjacent list {1:[2,3],2:[1,4],3:[1,4],4:[2,3]};
 // and check if e.g  [1,2] 1--->2 reach 2 using neibhours if yes than 1,2 is redundant
+// an edge is redundant only if u and v are already connected before adding that edge
 
 class Solution {
   /**
