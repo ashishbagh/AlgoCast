@@ -5,13 +5,15 @@ function parseHTML(html) {
 
   const parseAttributes = (str) => {
     const attrs = {};
-    const regex = /([^\s=]+)="([^"]*)"/g;
+    const regex = /([^\s=]+)(?:="([^"]*)")?/g;
     let match;
 
     while ((match = regex.exec(str)) !== null) {
-      attrs[match[1]] = match[2];
-    }
+      const key = match[1];
+      const value = match[2];
 
+      attrs[key] = value !== undefined ? value : true;
+    }
     return attrs;
   };
 
