@@ -12,26 +12,46 @@
 // Input: nums = [0, 3, 1, 3, 2, 3]
 // Output: 4
 
-
 class Solution {
-    /**
-     * @param {number[]} nums
-     * @return {number}
-     */
-    lengthOfLIS(nums) {
-        let n = nums.length;
-        let memo = new Array(n).fill(-1);
-        const dfs = (i) => {
-            if (memo[i] !== -1) return memo[i];
-            let count = 1;
-            for (let j = i + 1; j < n; j++) {
-                if (nums[i] < nums[j]) {
-                    count = Math.max(count, 1 + dfs(j));
-                }
-            }
-            memo[i] = count;
-            return count;
+  /**
+   * @param {number[]} nums
+   * @return {number}
+   */
+  lengthOfLIS(nums) {
+    let n = nums.length;
+    let memo = new Array(n).fill(-1);
+    const dfs = (i) => {
+      if (memo[i] !== -1) return memo[i];
+      let count = 1;
+      for (let j = i + 1; j < n; j++) {
+        if (nums[i] < nums[j]) {
+          count = Math.max(count, 1 + dfs(j));
         }
-        return Math.max(...nums.map((_, i) => dfs(i)));
-    }
+      }
+      memo[i] = count;
+      return count;
+    };
+    return Math.max(...nums.map((_, i) => dfs(i)));
+  }
 }
+
+const lengthOfLIS = (nums) => {
+  let tails = [];
+  for (const num of nums) {
+    let left = 0;
+    let right = tails.length;
+
+    while (left < right) {
+      let mid = parseInt((left + right) / 2);
+      if (tails[mid] < num) {
+        left = mid + 1;
+      } else {
+        right = mid;
+      }
+    }
+
+    tails[left] = num;
+  }
+
+  return tails.length;
+};

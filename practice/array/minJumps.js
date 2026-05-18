@@ -8,7 +8,9 @@ const minJumps = (arr) => {
 
   for (let i = 0; i < arr.length; i++) {
     farthest = Math.max(farthest, arr[i] + i);
+    console.log(i, farthest, right);
     if (i === right) {
+      // console.log(i, farthest, right);
       right = farthest;
       jumps++;
       // Can't progress further
@@ -20,6 +22,6 @@ const minJumps = (arr) => {
   return jumps;
 };
 
-console.log(minJumps([1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]));
+//console.log(minJumps([1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9]));
 
 console.log(minJumps([1, 4, 3, 6, 0, 7]));
