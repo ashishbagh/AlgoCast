@@ -1,41 +1,45 @@
 /**
+ * @typedef {((...args: Array<unknown>) => void) & {
+ *   cancel: () => void,
+ *   flush: () => void,
+ * }} DebouncedFunction
+ */
+
+/**
  * @param {Function} func
- * @param {number} wait
- * @return {Function}
+ * @param {number} [wait=0]
+ * @return {DebouncedFunction}
  */
 export default function debounce(func, wait) {
-    const cache = { timeoutId: undefined, data: "" };
+  let timeoutId;
+  let data;
+  let lastThis;
 
-    const debounce = function (...args) {
-        let timeoutId = cache.timeoutId;
-        const fn = function () { func.call(this, ...args); clearTimeout(cache.timeoutId); cache.timeoutId = undefined return this; }
-        cache.data = args;
-        if (!timeoutId) {
-            let id = setTimeout(fn.bind(this), wait);
-            cache.timeoutId = id;
-        } else {
-            clearTimeout(timeoutId);
-            let id = setTimeout(fn.bind(this), wait);
-            cache.timeoutId = id;
-        }
-        return this;
-    }.bind(this);
+  function debounced(...args) {
+    lastThis = this;
+    data = args;
 
-    debounce.cancel = function () {
-        let timeoutId = cache.timeoutId;
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-            cache.timeoutId = undefined
-        }
-    }.bind(this)
+    clearTimeout(timeoutId);
 
-    debounce.flush = function () {
-        let timeoutId = cache.timeoutId;
-        if (timeoutId) {
-            func.call(this, ...cache.data);
-            clearTimeout(timeoutId);
-        }
-    }.bind(this)
+    timeoutId = setTimeout(() => {
+      func.apply(lastThis, data);
+      timeoutId = undefined;
+      data = undefined;
+      lastThis = undefined;
+    }, wait);
+  }
 
-    return debounce;
+  debounced.cancel = function () {
+    clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }.bind(this);
+
+  debounced.flush = function (...args) {
+    if (timeoutId === undefined) return;
+    func.apply(lastThis, data);
+    clearTimeout(timeoutId);
+    timeoutId = undefined;
+  }.bind(this);
+
+  return debounced;
 }
