@@ -47,7 +47,6 @@ class Solution {
     let i = 0;
     let total = 0;
     let res = 0;
-
     while (i < gas.length) {
       total += gas[i] - cost[i];
       if (total < 0) {

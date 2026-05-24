@@ -10,7 +10,6 @@
 // Note: For all calls to set, the timestamps are in strictly increasing order.
 
 // Example 1:
-
 // Input:
 // ["TimeMap", "set", ["alice", "happy", 1], "get", ["alice", 1], "get", ["alice", 2], "set", ["alice", "sad", 3], "get", ["alice", 3]]
 

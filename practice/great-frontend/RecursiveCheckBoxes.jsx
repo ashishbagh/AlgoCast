@@ -29,12 +29,10 @@ export default function Checkboxes({ defaultCheckboxData }) {
     for (const node of nodes) {
       if (node?.children && node.children.length > 0) {
         updateParent(node.children);
-
         const allChecked = node.children.every((child) => child.checked);
         const someChecked = node.children.some(
           (child) => child.checked || child.isIndeterminate,
         );
-
         node.checked = allChecked;
         node.isIndeterminate = !allChecked && someChecked;
       }

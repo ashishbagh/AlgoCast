@@ -63,7 +63,7 @@ const cutRod = (prices, n) => {
   const dfs = (n) => {
     if (n === 0) return 0;
     if (n in cache) return cache[n];
-    let max = -Infinity;
+    let max = 0;
     for (let i = 1; i <= n; i++) {
       let price = prices[i - 1] + dfs(n - i);
       max = Math.max(price, max);

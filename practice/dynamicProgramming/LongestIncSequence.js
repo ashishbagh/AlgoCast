@@ -35,12 +35,12 @@ class Solution {
   }
 }
 
+// nlogn
 const lengthOfLIS = (nums) => {
   let tails = [];
   for (const num of nums) {
     let left = 0;
     let right = tails.length;
-
     while (left < right) {
       let mid = parseInt((left + right) / 2);
       if (tails[mid] < num) {
@@ -52,6 +52,5 @@ const lengthOfLIS = (nums) => {
 
     tails[left] = num;
   }
-
   return tails.length;
 };

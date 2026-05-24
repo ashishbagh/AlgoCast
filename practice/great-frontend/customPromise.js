@@ -1,45 +1,80 @@
-function customPromise(executor) {
-  // pending
-  // reject ---> catch
-  this.state = "pending";
-  let onResolve, onReject;
-  this.value = "";
-  this.error = "";
+class CustomPromise {
+  constructor(executor) {
+    this.state = "pending";
+    this.value = undefined;
+    this.handler = [];
 
-  this.then = function (callbackFn) {
-    onResolve = callbackFn;
-    if (this.state === "fullfilled") {
-      callbackFn(this.value);
-    }
-  };
+    const resolve = (value) => {
+      if (this.state !== "pending") return;
+      this.value = value;
+      this.state = "fulfilled";
+      this.runHandlers();
+    };
 
-  this.catch = function (callbackFn) {
-    onReject = callbackFn;
-    if (this.state === "rejected") {
-      callbackFn(this.error);
-    }
-  };
+    const reject = (error) => {
+      if (this.state !== "pending") return;
+      this.value = error;
+      this.state = "rejected";
+      this.runHandlers();
+    };
 
-  function resolve(value) {
-    this.value = value;
-    this.state = "fullfilled";
-    if (typeof onResolve === "function") {
-      onResolve(value);
+    try {
+      executor(resolve, reject);
+    } catch (error) {
+      reject(error);
     }
   }
 
-  function reject() {
-    this.error = error;
-    this.state = "rejected";
-    if (typeof onReject === "function") {
-      onReject(value);
-    }
+  runHandlers() {
+    queueMicrotask(() => {
+      while (this.handler.length) {
+        const { callback, onRejected, resolve, reject } = this.handler.shift();
+        try {
+          if (this.state === "fulfilled") {
+            if (typeof callback === "function") {
+              resolve(callback(this.value));
+            } else {
+              resolve(this.value);
+            }
+          } else {
+            if (typeof onRejected === "function") {
+              reject(onRejected(this.value));
+            } else {
+              reject(this.value);
+            }
+          }
+        } catch (error) {
+          reject(error);
+        }
+      }
+    });
   }
 
-  executor(resolve, reject);
+  then(callback, onRejected) {
+    return new CustomPromise((resolve, reject) => {
+      this.handler.push({ callback, onRejected, resolve, reject });
+      if (this.state !== "pending") {
+        this.runHandlers();
+      }
+    });
+  }
+
+  catch(onRejected) {
+    return this.then(undefined, onRejected);
+  }
 }
 
-// Usage
-new customPromise((resolve, reject) => {
-  setTimeout(() => resolve("Data loaded"), 1000);
-}).then((data) => console.log(data));
+const t = new CustomPromise((resolve, reject) => {
+  resolve("sync success");
+});
+
+t.then((value) => {
+  console.log("Test 1:", value);
+});
+
+const p = new CustomPromise((resolve) => {
+  resolve(10);
+});
+
+p.then((x) => console.log("Test 6A:", x));
+p.then((x) => console.log("Test 6B:", x));

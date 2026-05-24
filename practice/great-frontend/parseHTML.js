@@ -36,7 +36,6 @@ function parseHTML(html) {
         if (stack.length > 1) {
           stack.pop();
         }
-
         i = end + 1;
         continue;
       }
