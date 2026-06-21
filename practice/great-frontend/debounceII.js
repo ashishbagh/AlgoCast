@@ -15,31 +15,33 @@ export default function debounce(func, wait) {
   let data;
   let lastThis;
 
-  function debounced(...args) {
+  const debounce = function (...args) {
     lastThis = this;
     data = args;
 
     clearTimeout(timeoutId);
-
     timeoutId = setTimeout(() => {
-      func.apply(lastThis, data);
-      timeoutId = undefined;
+      func.apply(this, args);
       data = undefined;
       lastThis = undefined;
+      timeoutId = undefined;
     }, wait);
-  }
+  };
 
-  debounced.cancel = function () {
-    clearTimeout(timeoutId);
-    timeoutId = undefined;
-  }.bind(this);
+  debounce.cancel = function () {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
+    }
+  };
 
-  debounced.flush = function (...args) {
-    if (timeoutId === undefined) return;
-    func.apply(lastThis, data);
-    clearTimeout(timeoutId);
-    timeoutId = undefined;
-  }.bind(this);
+  debounce.flush = function () {
+    if (timeoutId) {
+      func.apply(lastThis, data);
+      clearTimeout(timeoutId);
+      timeoutId = undefined;
+    }
+  };
 
-  return debounced;
+  return debounce;
 }

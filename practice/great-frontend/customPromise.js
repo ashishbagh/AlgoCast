@@ -38,7 +38,7 @@ class CustomPromise {
             }
           } else {
             if (typeof onRejected === "function") {
-              reject(onRejected(this.value));
+              resolve(onRejected(this.value));
             } else {
               reject(this.value);
             }

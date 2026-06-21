@@ -3,26 +3,12 @@ import { useState } from "react";
 export default function Checkboxes({ defaultCheckboxData }) {
   const [state, setState] = useState(defaultCheckboxData);
 
-  const handleCheck = (id, isChecked) => {
+  const handleChange = (id, node, isChecked) => {
+    const updatedNode = updateNode(node, isChecked);
+    setState((prev) => updateNodeById(id, updatedNode, prev));
     const newState = [...state];
-    updateNode(id, isChecked, newState);
     updateParent(newState);
-    console.log(newState);
-    setState([...newState]);
-  };
-
-  const updateNode = (id, checked, nodes) => {
-    for (const node of nodes) {
-      if (!node.isIndeterminate) node.isIndeterminate = false;
-      if (node.id === id || id === "child") {
-        node.checked = checked;
-        if (node?.children && node.children.length > 0)
-          updateNode("child", checked, node.children);
-      } else {
-        if (node?.children && node.children.length > 0)
-          updateNode(id, checked, node.children);
-      }
-    }
+    setState(newState);
   };
 
   const updateParent = (nodes) => {
@@ -30,65 +16,81 @@ export default function Checkboxes({ defaultCheckboxData }) {
       if (node?.children && node.children.length > 0) {
         updateParent(node.children);
         const allChecked = node.children.every((child) => child.checked);
-        const someChecked = node.children.some(
+        const some = node.children.some(
           (child) => child.checked || child.isIndeterminate,
         );
         node.checked = allChecked;
-        node.isIndeterminate = !allChecked && someChecked;
+        node.isIndeterminate = !allChecked && some;
       }
     }
   };
 
+  const updateNode = (node, isChecked) => {
+    const dfs = (item) => {
+      if (!item) return;
+      if (item.children && item.children.length === 0) return;
+      item.checked = isChecked;
+      if (item && item.children && item.children.length > 0) {
+        for (const child of item.children) {
+          dfs(child);
+        }
+      }
+      return;
+    };
+    dfs(node);
+    return node;
+  };
+
+  const updateNodeById = (id, updateNode, nodes) => {
+    return nodes.map((node) => {
+      if (!node.isIndeterminate) node.isIndeterminate = false;
+      if (node.id === id) return updateNode;
+      if (node.children) {
+        return {
+          ...node,
+          children: updateNodeById(id, updateNode, node.children),
+        };
+      }
+
+      return node;
+    });
+  };
+
   return (
     <div>
-      <pre>
-        {state.map((item, index) => (
-          <CheckBoxComponent
-            key={item.name || index}
-            {...item}
-            handleCheck={handleCheck}
-          />
-        ))}
-      </pre>
+      {state.map((items) => (
+        <Checkbox node={items} handleChange={handleChange} />
+      ))}
     </div>
   );
 }
 
-const CheckBoxComponent = ({
-  checked = false,
-  isIndeterminate = false,
-  children = [],
-  name = "",
-  handleCheck,
-  id,
-}) => {
-  const onChange = (event) => {
-    handleCheck(id, event.target.checked);
-  };
+const Checkbox = ({ node, handleChange }) => {
+  const { id, name, checked, children = [], isIndeterminate = false } = node;
+
   return (
     <div>
-      <div>
+      <div className="checkBox">
         <input
           type="checkbox"
-          //checked={isChecked}
-          onClick={onChange}
+          id={id}
+          onClick={(event) => {
+            handleChange(id, node, event.target.checked);
+          }}
           ref={(el) => {
             if (el) {
-              el.indeterminate = isIndeterminate;
               el.checked = checked;
+              el.indeterminate = isIndeterminate;
             }
           }}
         />
-        <span>{name}</span>
+        <label for={id}>{name}</label>
       </div>
       <div style={{ paddingLeft: "20px" }}>
-        {children.map((item, index) => (
-          <CheckBoxComponent
-            key={item.name || index}
-            {...item}
-            handleCheck={handleCheck}
-          />
-        ))}
+        {children.length > 0 &&
+          children.map((items) => (
+            <Checkbox node={items} handleChange={handleChange} />
+          ))}
       </div>
     </div>
   );
