@@ -14,16 +14,25 @@
 // Explanation: The longest subarray with sum equals to 0 is [0, -4, 3, 1, 0]
 
 const longestSub = (arr) => {
-  let map = {};
-  let sum = 0;
+  let map = new Map();
+  let prefix = 0;
   let count = 0;
+
   for (let i = 0; i < arr.length; i++) {
-    sum = arr[i] + sum;
+    prefix += arr[i];
 
-    if (sum === 0) {
-
-        
-
+    if (!map.has(prefix)) {
+      map.set(prefix, i);
+    } else {
+      const storedIndex = map.get(prefix);
+      const len = i - storedIndex;
+      count = Math.max(count, len);
     }
   }
+
+  return count;
 };
+
+console.log(longestSub([15, -2, 2, -8, 1, 7, 10, 23]));
+console.log(longestSub([2, 10, 4]));
+console.log(longestSub([1, 0, -4, 3, 1, 0]));

@@ -3,31 +3,28 @@
  * @return {Promise<Array>}
  */
 export default function promiseAll(iterable) {
-  const results = new Array(n);
+  let result = [];
+  let completed = 0;
   return new Promise((resolve, reject) => {
-    let results = [];
-    let counter = iterable.length;
-    for (const prom of iterable) {
-      let isPromise = prom instanceof Promise;
-      if (!isPromise) {
-        results.push(prom);
-        counter--;
-        if (counter === 0) resolve(results);
-        continue;
-      }
-      prom
+    if (iterable.length === 0) {
+      resolve(result);
+      return;
+    }
+    for (let i = 0; i < iterable.length; i++) {
+      const prom = iterable[i];
+      Promise.resolve(prom)
         .then((response) => {
-          results.push(response);
-          counter--;
-          if (counter === 0) resolve(results);
+          result[i] = response;
+          completed++;
         })
         .catch((error) => {
-          results.push(error);
           reject(error);
+        })
+        .finally(() => {
+          if (completed === iterable.length) {
+            resolve(result);
+          }
         });
-    }
-    if (iterable.length === 0) {
-      resolve([]);
     }
   });
 }
